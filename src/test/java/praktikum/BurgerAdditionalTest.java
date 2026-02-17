@@ -21,12 +21,14 @@ public class BurgerAdditionalTest {
     public void testRemoveIngredientFromEmptyListThrowsException() {
         Burger burger = new Burger();
         burger.removeIngredient(0);
+
     }
 
     @Test
     public void testMoveIngredientFromEmptyListThrowsException() {
         Burger burger = new Burger();
         burger.moveIngredient(0, 0);
+
     }
 
     @Test
@@ -34,6 +36,7 @@ public class BurgerAdditionalTest {
         Burger burger = new Burger();
         burger.addIngredient(ingredientMock);
         burger.moveIngredient(-1, 0);
+
     }
 
     @Test
@@ -41,18 +44,21 @@ public class BurgerAdditionalTest {
         Burger burger = new Burger();
         burger.addIngredient(ingredientMock);
         burger.moveIngredient(0, -1);
+
     }
 
     @Test
     public void testGetPriceWithNullBunThrowsNPE() {
         Burger burger = new Burger();
         burger.getPrice();
+
     }
 
     @Test
     public void testGetReceiptWithNullBunThrowsNPE() {
         Burger burger = new Burger();
         burger.getReceipt();
+
     }
 
     @Test
@@ -60,6 +66,7 @@ public class BurgerAdditionalTest {
         Burger burger = new Burger();
         burger.addIngredient(ingredientMock);
         burger.moveIngredient(0, 2);
+
     }
 
     @Test
@@ -67,5 +74,6 @@ public class BurgerAdditionalTest {
         Burger burger = new Burger();
         burger.setBuns(null);
         burger.getPrice();
+
     }
 }
