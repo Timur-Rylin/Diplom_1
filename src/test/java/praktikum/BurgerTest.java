@@ -42,7 +42,7 @@ public class BurgerTest {
         this.ingredientPrice = ingredientPrice;
     }
 
-    @Parameterized.Parameters(name = "Тест с булкой {0} (цена {1}) и ингредиентом {2} {3} (цена {4})")
+    @Parameterized.Parameters(name = "Булка: {0} (цена {1}), ингредиент: {2} {3} (цена {4})")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
                 {"black bun", 100.0f, IngredientType.SAUCE, "hot sauce", 50.0f},
@@ -92,9 +92,7 @@ public class BurgerTest {
     public void testMoveIngredient() {
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
-
         burger.moveIngredient(0, 1);
-
         assertEquals(2, burger.ingredients.size());
     }
 
@@ -108,32 +106,38 @@ public class BurgerTest {
         assertEquals(expectedPrice, burger.getPrice(), 0.001f);
     }
 
-
-
     @Test
     public void testGetPriceWithoutBunThrowsNPE() {
-        burger.getPrice(); // Должен упасть с NPE
+        burger.getPrice();
+    }
+
+    @Test
+    public void testGetReceipt() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        String receipt = burger.getReceipt();
+        assertNotNull(receipt);
     }
 
     @Test
     public void testGetReceiptWithoutBunThrowsNPE() {
-        burger.getReceipt(); // Должен упасть с NPE
+        burger.getReceipt();
     }
 
     @Test
     public void testRemoveIngredientWithInvalidIndex() {
-        burger.removeIngredient(0); // Должен упасть с IndexOutOfBoundsException
+        burger.removeIngredient(0);
     }
 
     @Test
     public void testMoveIngredientWithInvalidIndex() {
         burger.addIngredient(sauceMock);
-        burger.moveIngredient(5, 0); // Должен упасть с IndexOutOfBoundsException
+        burger.moveIngredient(5, 0);
     }
 
     @Test
     public void testMoveIngredientWithInvalidNewIndex() {
         burger.addIngredient(sauceMock);
-        burger.moveIngredient(0, 5); // Должен упасть с IndexOutOfBoundsException
+        burger.moveIngredient(0, 5);
     }
 }

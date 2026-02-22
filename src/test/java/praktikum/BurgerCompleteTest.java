@@ -47,99 +47,154 @@ public class BurgerCompleteTest {
     }
 
     @Test
-    public void testSetBuns() {
+    public void testSetBunsUpdatesBunField() {
         burger.setBuns(bunMock);
         assertEquals(bunMock, burger.bun);
     }
 
     @Test
-    public void testAddIngredient() {
+    public void testAddIngredientIncreasesListSize() {
         burger.addIngredient(sauceMock);
         assertEquals(1, burger.ingredients.size());
+    }
+
+    @Test
+    public void testAddIngredientAddsCorrectIngredient() {
+        burger.addIngredient(sauceMock);
         assertEquals(sauceMock, burger.ingredients.get(0));
     }
 
     @Test
-    public void testAddMultipleIngredients() {
+    public void testAddMultipleIngredientsIncreasesSize() {
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
         assertEquals(2, burger.ingredients.size());
     }
 
     @Test
-    public void testAddMultipleIngredientsMaintainsOrder() {
+    public void testAddMultipleIngredientsPreservesOrder() {
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
         assertEquals(sauceMock, burger.ingredients.get(0));
+    }
+
+    @Test
+    public void testAddMultipleIngredientsPreservesOrderSecondPosition() {
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
         assertEquals(fillingMock, burger.ingredients.get(1));
     }
 
     @Test
-    public void testRemoveIngredient() {
+    public void testRemoveIngredientDecreasesSize() {
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
         burger.removeIngredient(0);
         assertEquals(1, burger.ingredients.size());
+    }
+
+    @Test
+    public void testRemoveIngredientRemovesCorrectElement() {
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
+        burger.removeIngredient(0);
         assertEquals(fillingMock, burger.ingredients.get(0));
     }
 
     @Test
-    public void testMoveIngredient() {
+    public void testMoveIngredientFromStartToEnd() {
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
-
         burger.moveIngredient(0, 1);
-
         assertEquals(fillingMock, burger.ingredients.get(0));
+    }
+
+    @Test
+    public void testMoveIngredientFromStartToEndSecondPosition() {
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
+        burger.moveIngredient(0, 1);
         assertEquals(sauceMock, burger.ingredients.get(1));
     }
 
     @Test
-    public void testGetPrice() {
-        burger.setBuns(bunMock);
-        burger.addIngredient(sauceMock);
-        burger.addIngredient(fillingMock);
-
-        float price = burger.getPrice();
-        assertEquals(325.0f, price, 0.001f);
-    }
-
-    @Test
-    public void testGetPriceWithOnlyBun() {
+    public void testGetPriceWithBunOnly() {
         burger.setBuns(bunMock);
         float price = burger.getPrice();
         assertEquals(200.0f, price, 0.001f);
     }
 
     @Test
-    public void testGetReceipt() {
+    public void testGetPriceWithOneIngredient() {
         burger.setBuns(bunMock);
         burger.addIngredient(sauceMock);
-
-        String receipt = burger.getReceipt();
-        assertTrue(receipt.contains("Complete Bun"));
-        assertTrue(receipt.contains("Complete Sauce"));
-        assertTrue(receipt.contains("Price: 250.000000"));
+        float price = burger.getPrice();
+        assertEquals(250.0f, price, 0.001f);
     }
-
     @Test
-    public void testGetReceiptWithMultipleIngredients() {
+    public void testGetPriceWithMultipleIngredients() {
         burger.setBuns(bunMock);
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
-
-        String receipt = burger.getReceipt();
-        assertTrue(receipt.contains("Complete Bun"));
-        assertTrue(receipt.contains("Complete Sauce"));
-        assertTrue(receipt.contains("Complete Filling"));
-        assertTrue(receipt.contains("Price: 325.000000"));
+        float price = burger.getPrice();
+        assertEquals(325.0f, price, 0.001f);
     }
+
     @Test
-    public void testGetReceiptFormat() {
+    public void testGetReceiptFormatWithBunOnly() {
         burger.setBuns(bunMock);
         String receipt = burger.getReceipt();
         assertTrue(receipt.startsWith("(==== Complete Bun ====)"));
         assertTrue(receipt.contains("(==== Complete Bun ====)"));
         assertTrue(receipt.contains("Price: 200.000000"));
+    }
+
+    @Test
+    public void testGetReceiptFormatWithOneIngredient() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        String receipt = burger.getReceipt();
+        assertTrue(receipt.contains("(==== Complete Bun ====)"));
+        assertTrue(receipt.contains("= sauce Complete Sauce ="));
+        assertTrue(receipt.contains("Price: 250.000000"));
+    }
+
+    @Test
+    public void testGetReceiptFormatWithMultipleIngredients() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
+        String receipt = burger.getReceipt();
+        assertTrue(receipt.contains("(==== Complete Bun ====)"));
+        assertTrue(receipt.contains("= sauce Complete Sauce ="));
+        assertTrue(receipt.contains("= filling Complete Filling ="));
+        assertTrue(receipt.contains("Price: 325.000000"));
+    }
+
+    @Test
+    public void testGetReceiptContainsLowerCaseType() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(fillingMock);
+        String receipt = burger.getReceipt();
+        assertTrue(receipt.contains("filling"));
+    }
+
+    @Test
+    public void testGetReceiptDoesNotContainUpperCaseType() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(fillingMock);
+        String receipt = burger.getReceipt();
+        assertFalse(receipt.contains("FILLING"));
+    }
+
+    @Test
+    public void testPriceDoesNotChangeAfterMovingIngredients() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
+        float priceBefore = burger.getPrice();
+        burger.moveIngredient(0, 1);
+        float priceAfter = burger.getPrice();
+        assertEquals(priceBefore, priceAfter, 0.001f);
     }
 }

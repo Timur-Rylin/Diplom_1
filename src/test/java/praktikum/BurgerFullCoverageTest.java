@@ -18,15 +18,16 @@ public class BurgerFullCoverageTest {
     private Bun bunMock;
 
     @Mock
-    private Ingredient ingredientMock;
+    private Ingredient sauceMock;
+
+    @Mock
+    private Ingredient fillingMock;
 
     @Before
     public void setUp() {
         burger = new Burger();
-
         when(bunMock.getName()).thenReturn("Test Bun");
         when(bunMock.getPrice()).thenReturn(100.0f);
-        when(ingredientMock.getPrice()).thenReturn(50.0f);
     }
 
     @Test
@@ -37,13 +38,13 @@ public class BurgerFullCoverageTest {
 
     @Test
     public void testAddIngredient() {
-        burger.addIngredient(ingredientMock);
+        burger.addIngredient(sauceMock);
         assertEquals(1, burger.ingredients.size());
     }
 
     @Test
     public void testRemoveIngredient() {
-        burger.addIngredient(ingredientMock);
+        burger.addIngredient(sauceMock);
         burger.removeIngredient(0);
         assertTrue(burger.ingredients.isEmpty());
     }
@@ -51,7 +52,8 @@ public class BurgerFullCoverageTest {
     @Test
     public void testGetPrice() {
         burger.setBuns(bunMock);
-        burger.addIngredient(ingredientMock);
+        when(sauceMock.getPrice()).thenReturn(50.0f);
+        burger.addIngredient(sauceMock);
         assertEquals(250.0f, burger.getPrice(), 0.001f);
     }
 
