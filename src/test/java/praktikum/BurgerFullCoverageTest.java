@@ -58,10 +58,16 @@ public class BurgerFullCoverageTest {
     }
 
     @Test
-    public void testGetReceipt() {
+    public void testGetReceiptContainsBunName() {
         burger.setBuns(bunMock);
         String receipt = burger.getReceipt();
         assertTrue(receipt.contains("Test Bun"));
+    }
+
+    @Test
+    public void testGetReceiptContainsPrice() {
+        burger.setBuns(bunMock);
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains("Price: 200.000000"));
     }
 }

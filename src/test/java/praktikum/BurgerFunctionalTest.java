@@ -45,9 +45,17 @@ public class BurgerFunctionalTest {
     }
 
     @Test
-    public void testConstructor() {
+    public void testConstructorInitializesIngredientsList() {
         assertNotNull(burger.ingredients);
+    }
+
+    @Test
+    public void testConstructorInitializesEmptyIngredientsList() {
         assertTrue(burger.ingredients.isEmpty());
+    }
+
+    @Test
+    public void testConstructorInitializesNullBun() {
         assertNull(burger.bun);
     }
 }

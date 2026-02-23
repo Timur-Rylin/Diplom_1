@@ -72,14 +72,14 @@ public class BurgerCompleteTest {
     }
 
     @Test
-    public void testAddMultipleIngredientsPreservesOrder() {
+    public void testAddMultipleIngredientsPreservesOrderFirstElement() {
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
         assertEquals(sauceMock, burger.ingredients.get(0));
     }
 
     @Test
-    public void testAddMultipleIngredientsPreservesOrderSecondPosition() {
+    public void testAddMultipleIngredientsPreservesOrderSecondElement() {
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
         assertEquals(fillingMock, burger.ingredients.get(1));
@@ -102,7 +102,7 @@ public class BurgerCompleteTest {
     }
 
     @Test
-    public void testMoveIngredientFromStartToEnd() {
+    public void testMoveIngredientFromStartToEndFirstElement() {
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
         burger.moveIngredient(0, 1);
@@ -110,7 +110,7 @@ public class BurgerCompleteTest {
     }
 
     @Test
-    public void testMoveIngredientFromStartToEndSecondPosition() {
+    public void testMoveIngredientFromStartToEndSecondElement() {
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
         burger.moveIngredient(0, 1);
@@ -141,33 +141,83 @@ public class BurgerCompleteTest {
     }
 
     @Test
-    public void testGetReceiptFormatWithBunOnly() {
+    public void testGetReceiptStartsWithBun() {
         burger.setBuns(bunMock);
         String receipt = burger.getReceipt();
         assertTrue(receipt.startsWith("(==== Complete Bun ====)"));
+    }
+
+    @Test
+    public void testGetReceiptContainsBun() {
+        burger.setBuns(bunMock);
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains("(==== Complete Bun ====)"));
+    }
+
+    @Test
+    public void testGetReceiptContainsPrice() {
+        burger.setBuns(bunMock);
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains("Price: 200.000000"));
     }
 
     @Test
-    public void testGetReceiptFormatWithOneIngredient() {
+    public void testGetReceiptWithOneIngredientContainsBun() {
         burger.setBuns(bunMock);
         burger.addIngredient(sauceMock);
         String receipt = burger.getReceipt();
         assertTrue(receipt.contains("(==== Complete Bun ====)"));
+    }
+
+    @Test
+    public void testGetReceiptWithOneIngredientContainsSauce() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains("= sauce Complete Sauce ="));
+    }
+
+    @Test
+    public void testGetReceiptWithOneIngredientContainsPrice() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains("Price: 250.000000"));
     }
 
     @Test
-    public void testGetReceiptFormatWithMultipleIngredients() {
+    public void testGetReceiptWithMultipleIngredientsContainsBun() {
         burger.setBuns(bunMock);
         burger.addIngredient(sauceMock);
         burger.addIngredient(fillingMock);
         String receipt = burger.getReceipt();
         assertTrue(receipt.contains("(==== Complete Bun ====)"));
+    }
+
+    @Test
+    public void testGetReceiptWithMultipleIngredientsContainsSauce() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains("= sauce Complete Sauce ="));
+    }
+
+    @Test
+    public void testGetReceiptWithMultipleIngredientsContainsFilling() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains("= filling Complete Filling ="));
+    }
+
+    @Test
+    public void testGetReceiptWithMultipleIngredientsContainsPrice() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
+        String receipt = burger.getReceipt();
         assertTrue(receipt.contains("Price: 325.000000"));
     }
 
